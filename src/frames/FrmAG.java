@@ -1,7 +1,9 @@
 package frames;
 
 import Problema_Mochila.AplicacaoAG;
+import Problema_Mochila.ConversorBinario;
 import java.util.ArrayList;
+import java.util.Random;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
@@ -11,7 +13,7 @@ import javax.swing.JOptionPane;
  */
 public class FrmAG extends javax.swing.JFrame {
 
-    private final DefaultListModel<String> lista;
+    private DefaultListModel<String> lst_model;
     private int valorObj[];
     private int pesoObj[];
     private AplicacaoAG ag;
@@ -19,17 +21,19 @@ public class FrmAG extends javax.swing.JFrame {
 
     public FrmAG() {
         initComponents();
-        lista = new DefaultListModel<>();
+        lst_model = new DefaultListModel<>();
+        spinerGeracoes.setValue(20);
+        spinerIndividuos.setValue(8);
     }
 
     public void populacaoInicial() {
-        
+
         populacao = new ArrayList<>();
-        
+
         for (int i = 0; i < listaPopulacao.getModel().getSize(); i++) {
             populacao.add(listaPopulacao.getModel().getElementAt(i));
         }
-        
+
     }
 
     public void preencherValoresPesos() {
@@ -52,7 +56,7 @@ public class FrmAG extends javax.swing.JFrame {
 
     }
 
-    public void iniciar() {
+    public void iniciarAlgoritmo() {
 
         populacaoInicial();
         preencherValoresPesos();
@@ -61,9 +65,9 @@ public class FrmAG extends javax.swing.JFrame {
 
         int ger = 1;
 
-        while (ger <= (int) jSpinner1.getValue()) {
+        while (ger <= (int) spinerGeracoes.getValue()) {
 
-            tfConsole.append("\n========== GERAÇÂO " + ger + " ==========\n");
+            tfConsole.append("\n============= GERAÇÂO " + ger + " =============\n");
 
             ag.exibePopulacao(populacao);
 
@@ -98,9 +102,11 @@ public class FrmAG extends javax.swing.JFrame {
         tfValorObj = new javax.swing.JTextField();
         tfPesosObj = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        jSpinner1 = new javax.swing.JSpinner();
+        spinerGeracoes = new javax.swing.JSpinner();
         btIniciarAG = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
+        spinerIndividuos = new javax.swing.JSpinner();
+        jSeparator2 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Algoritmo da Mochila - Knapsack Problem");
@@ -108,6 +114,7 @@ public class FrmAG extends javax.swing.JFrame {
         jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         tfConsole.setEditable(false);
+        tfConsole.setBackground(new java.awt.Color(255, 255, 204));
         tfConsole.setColumns(20);
         tfConsole.setRows(5);
         jScrollPane1.setViewportView(tfConsole);
@@ -118,7 +125,7 @@ public class FrmAG extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 362, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 425, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -144,13 +151,8 @@ public class FrmAG extends javax.swing.JFrame {
         buttonGroup1.add(jRadioButton2);
         jRadioButton2.setText("Torneio");
 
-        jLabel4.setText("População Inicial");
+        jLabel4.setText("Quantidade de Individuos");
 
-        listaPopulacao.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "01011101", "11001101", "10101000", "11110000", "10001101", "00001111", "10111011", "11001110" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         listaPopulacao.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane2.setViewportView(listaPopulacao);
 
@@ -185,34 +187,36 @@ public class FrmAG extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jSeparator1)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btIniciarAG, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btGerarPop, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btAdicionarPop, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(tfValorObj)
                     .addComponent(tfPesosObj)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel5)
+                        .addComponent(btGerarPop, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btAdicionarPop, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(18, 18, 18)
+                        .addComponent(jRadioButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jSpinner1))
+                        .addComponent(jRadioButton2))
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jRadioButton1)
-                                .addGap(18, 18, 18)
-                                .addComponent(jRadioButton2)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                            .addComponent(spinerIndividuos)
+                            .addComponent(spinerGeracoes))))
                 .addContainerGap())
-            .addComponent(jSeparator1)
+            .addComponent(jSeparator2)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -225,29 +229,33 @@ public class FrmAG extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(tfPesosObj, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(11, 11, 11)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jRadioButton1)
-                    .addComponent(jRadioButton2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jSpinner1)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btAdicionarPop)
-                    .addComponent(btGerarPop))
+                    .addComponent(jRadioButton2)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel3)
+                        .addComponent(jRadioButton1)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 6, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(spinerGeracoes)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(spinerIndividuos))
+                .addGap(12, 12, 12)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 1, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btGerarPop)
+                    .addComponent(btAdicionarPop))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btIniciarAG)
-                .addContainerGap())
+                .addGap(6, 6, 6))
         );
 
         jTabbedPane1.addTab("Parâmetros", jPanel1);
@@ -274,11 +282,13 @@ public class FrmAG extends javax.swing.JFrame {
     private void btAdicionarPopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAdicionarPopActionPerformed
         // TODO add your handling code here:
 
-        String op = JOptionPane.showInputDialog(null, "Adicione um Individuo!");
-
-        lista.addElement(op);
-
-        listaPopulacao.setModel(lista);
+        if (listaPopulacao.getModel().getSize() < (int) spinerIndividuos.getValue()) {
+            String op = JOptionPane.showInputDialog(null, "Adicione um Individuo!");
+            lst_model.addElement(op);
+            listaPopulacao.setModel(lst_model);
+        } else {
+            JOptionPane.showMessageDialog(null, "Limite de individuos da população " + spinerIndividuos.getValue());
+        }
 
     }//GEN-LAST:event_btAdicionarPopActionPerformed
 
@@ -287,18 +297,47 @@ public class FrmAG extends javax.swing.JFrame {
 
         tfConsole.setText("");
 
-        if ((int) jSpinner1.getValue() > 0) {
-            iniciar();
+        if ((int) spinerGeracoes.getValue() > 0) {
+            iniciarAlgoritmo();
         } else {
             JOptionPane.showMessageDialog(null, "Geração deve ser maior que 0", "AVISO", JOptionPane.INFORMATION_MESSAGE);
         }
+
+
     }//GEN-LAST:event_btIniciarAGActionPerformed
 
     private void btGerarPopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btGerarPopActionPerformed
         // TODO add your handling code here:
+
+        if ((int) spinerIndividuos.getValue() < 12) {
+            JOptionPane.showMessageDialog(null, "O Algoritmo de gerar população inicial\n"
+                    + "utiliza numeros Randômicos para isso é indicado\n"
+                    + "utilizar uma população de no minimo 12 IDVS\n"
+                    + "Pode ser adicionado manualmente",
+                    "AVISO", JOptionPane.INFORMATION_MESSAGE);
+        }
         
-        
-        
+        ConversorBinario conv = new ConversorBinario();
+
+        Random rd = new Random();
+        ArrayList<Integer> srt = new ArrayList();
+
+        while (srt.size() < (int) spinerIndividuos.getValue()) {
+            int sorteio = rd.nextInt(255);
+            if (sorteio > 128) {
+                srt.add(sorteio);
+            }
+        }
+
+        lst_model = new DefaultListModel<>();
+
+        for (int s : srt) {
+            lst_model.addElement(conv.converteDecBin(s));
+        }
+
+        listaPopulacao.setModel(lst_model);
+
+
     }//GEN-LAST:event_btGerarPopActionPerformed
 
     public static void main(String args[]) {
@@ -348,9 +387,11 @@ public class FrmAG extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSpinner jSpinner1;
+    private javax.swing.JSeparator jSeparator2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JList<String> listaPopulacao;
+    private javax.swing.JSpinner spinerGeracoes;
+    private javax.swing.JSpinner spinerIndividuos;
     public javax.swing.JTextArea tfConsole;
     private javax.swing.JTextField tfPesosObj;
     private javax.swing.JTextField tfValorObj;

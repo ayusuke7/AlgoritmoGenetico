@@ -83,7 +83,7 @@ public class AplicacaoAG {
 
     public String Mutacao(String cromossomo) {
 
-   /*  Sorteia uma posição da String e altera o valor e retorna outra String */
+        /*  Sorteia uma posição da String e altera o valor e retorna outra String */
         Random rd = new Random();
         int pos = rd.nextInt(cromossomo.length());
 //        System.out.println("mutação na posicao: " + pos);
@@ -106,29 +106,29 @@ public class AplicacaoAG {
     public ArrayList<String> aplicaCrossover(ArrayList<String> idvs) {
 
         ArrayList<String> filhos = new ArrayList<>();
-        
+
         filhos.add(Crossover(idvs.get(0), idvs.get(1)));
         filhos.add(Crossover(idvs.get(1), idvs.get(2)));
         filhos.add(Crossover(idvs.get(3), idvs.get(4)));
         filhos.add(Crossover(idvs.get(4), idvs.get(3)));
 
-        console.append("Aplicando Crossover >> "+filhos+"\n");
+        console.append("Aplicando Crossover >> " + filhos + "\n");
         return filhos;
     }
 
-    public ArrayList<String> aplicaMutacao(ArrayList<String> idvs){
-        
+    public ArrayList<String> aplicaMutacao(ArrayList<String> idvs) {
+
         ArrayList<String> mutacao = new ArrayList<>();
-        
+
         mutacao.add(Mutacao(idvs.get(0)));
         mutacao.add(Mutacao(idvs.get(1)));
         mutacao.add(Mutacao(idvs.get(2)));
         mutacao.add(Mutacao(idvs.get(3)));
-        
-        console.append("Aplicando Mutação >> "+mutacao+"\n");
+
+        console.append("Aplicando Mutação >> " + mutacao + "\n");
         return mutacao;
     }
-    
+
     public ArrayList<String[]> selecaoPorAptdao() {
 
         //Descarta os individuos com aptidão -1 ou seja INVALIDO
@@ -189,7 +189,7 @@ public class AplicacaoAG {
             if (cont <= _POPULACAO.size() / 2) {
                 melhores.add(aux[0]);
                 cont++;
-            }           
+            }
         }
 
         console.append("\nIndividuos Selecionados >> " + melhores + "\n");
@@ -202,16 +202,18 @@ public class AplicacaoAG {
 
         ArrayList<String[]> selecao = selecaoPorAptdao();
         ArrayList<String> pais = selecaoPorRoleta(selecao);
+        //Aplica o cross-over nos filhos
         ArrayList filhos = aplicaCrossover(pais);
+        //Aplica a mutaçao no filhos
         ArrayList mutacao = aplicaMutacao(filhos);
-        ArrayList nova_populacao = new ArrayList();
-        
+
         //Cria a nova populacao de inviduos
+        ArrayList nova_populacao = new ArrayList();
         nova_populacao.addAll(pais);
         nova_populacao.addAll(mutacao);
-                
-        console.append("Nova Populacao >> "+nova_populacao+"\n");
-        
+
+        console.append("Nova Populacao >> " + nova_populacao + "\n");
+
         return nova_populacao;
 
     }
