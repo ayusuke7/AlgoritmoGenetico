@@ -1,8 +1,6 @@
 # AgoritmoGenetico
 Algoritmo Génetico - Programação dinâmica - Problem Knaspack
 
-Tutorial de demonstração --> http://alexandrehenrique.esy.es/programacao/algoritmo-genetico-knapsack-problem/
-
 Descrição do Problema:
 
 Desenvolver um programa que aplique Algoritmos Genéticos para resolver o problema da mochila binária em um determinado caso, dado um conjunto de itens, cada qual com um determinado peso e valor, determinar quais itens devem ser inclusos na mochila, de maneira que se obtenha o maior valor e que a soma dos pesos desses itens não ultrapasse a capacidade da mochila.
@@ -20,5 +18,3 @@ EX: Cromossomo 1 = 11001110
 → Deve-se incluir os objetos 1, 2, 5, 6 e 7. Efetuando o cálculo do peso. 
 
 Demonstração do Algoritmo : Interface desenvolvida em Java
-
-IMG: http://alexandrehenrique.esy.es/wp-content/uploads/2017/06/Capturar-1.jpg
